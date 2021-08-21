@@ -5,11 +5,12 @@ import com.linkedinlearning.reactivespring.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping(ReservationResource.ROOM_VI_RESERVATION)
 @CrossOrigin
+@RequestMapping(ReservationResource.ROOM_VI_RESERVATION)
 public class ReservationResource {
 
     public static final String ROOM_VI_RESERVATION = "/room/v1/reservation/";
@@ -24,6 +25,11 @@ public class ReservationResource {
     @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Reservation> getReservationById(@PathVariable String id) {
         return reservationService.getReservation(id);
+    }
+
+    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<Reservation> getAllReservations() {
+        return reservationService.listAllReservations();
     }
 
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
